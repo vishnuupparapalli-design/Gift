@@ -31,14 +31,14 @@
       width: 100%;
       height: 100%;
       overflow: hidden;
-      background: radial-gradient(circle at 50% 40%, #150b1f 0%, #08040d 75%, #030105 100%);
+      background: radial-gradient(circle at 50% 40%, #1a0b28 0%, #0c0515 70%, #030106 100%);
       color: #f7f3ee;
       font-family: 'Montserrat', sans-serif;
       position: fixed;
       touch-action: none;
     }
 
-    /* Botanical Background */
+    /* Dynamic Colorful Botanical Background */
     #botanical-canvas {
       position: absolute;
       top: 0;
@@ -46,6 +46,17 @@
       width: 100%;
       height: 100%;
       z-index: 1;
+      pointer-events: none;
+    }
+
+    /* Interactive Touch Trail Canvas */
+    #trail-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 6;
       pointer-events: none;
     }
 
@@ -98,17 +109,17 @@
     }
 
     .romantic-btn {
-      background: linear-gradient(135deg, rgba(240, 160, 180, 0.35), rgba(180, 100, 130, 0.2));
-      border: 1px solid rgba(255, 215, 225, 0.45);
+      background: linear-gradient(135deg, rgba(245, 150, 180, 0.4), rgba(180, 100, 150, 0.25));
+      border: 1px solid rgba(255, 215, 235, 0.5);
       color: #fff6f8;
       font-family: 'Montserrat', sans-serif;
       font-size: 13px;
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      padding: 16px 36px;
+      padding: 16px 38px;
       border-radius: 50px;
       cursor: pointer;
-      box-shadow: 0 0 35px rgba(245, 140, 170, 0.3), inset 0 0 15px rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 35px rgba(245, 140, 180, 0.35), inset 0 0 15px rgba(255, 255, 255, 0.25);
       transition: all 0.4s ease;
       display: inline-flex;
       align-items: center;
@@ -140,18 +151,18 @@
     }
 
     .intro-text-box {
-      min-height: 120px;
+      min-height: 130px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      max-width: 360px;
+      max-width: 380px;
       pointer-events: none;
     }
 
     .intro-line {
       font-size: 26px;
-      line-height: 1.4;
+      line-height: 1.45;
       opacity: 0;
       transition: opacity 0.8s ease, transform 0.8s ease;
       transform: translateY(10px);
@@ -166,7 +177,7 @@
       position: relative;
       width: 150px;
       height: 150px;
-      margin: 45px 0;
+      margin: 40px 0;
       perspective: 900px;
     }
 
@@ -183,10 +194,10 @@
       width: 130px;
       height: 95px;
       left: 10px;
-      background: linear-gradient(135deg, #4d1630, #1f0717);
+      background: linear-gradient(135deg, #521636, #22071a);
       border-radius: 14px;
-      border: 1px solid rgba(255, 200, 215, 0.3);
-      box-shadow: 0 20px 45px rgba(0,0,0,0.7), inset 0 0 25px rgba(255, 120, 160, 0.2);
+      border: 1px solid rgba(255, 200, 225, 0.35);
+      box-shadow: 0 20px 45px rgba(0,0,0,0.75), inset 0 0 25px rgba(255, 120, 180, 0.25);
     }
 
     .box-ribbon-v {
@@ -197,7 +208,7 @@
       height: 100%;
       transform: translateX(-50%);
       background: linear-gradient(to bottom, #ffe8bf, #d49c4f);
-      box-shadow: 0 0 12px rgba(255, 220, 140, 0.5);
+      box-shadow: 0 0 14px rgba(255, 220, 140, 0.6);
     }
 
     .box-ribbon-h {
@@ -208,7 +219,7 @@
       height: 20px;
       transform: translateY(-50%);
       background: linear-gradient(to right, #ffe8bf, #d49c4f);
-      box-shadow: 0 0 12px rgba(255, 220, 140, 0.5);
+      box-shadow: 0 0 14px rgba(255, 220, 140, 0.6);
     }
 
     .box-lid {
@@ -217,9 +228,9 @@
       left: 0;
       width: 150px;
       height: 40px;
-      background: linear-gradient(135deg, #6b1f44, #2d0b21);
+      background: linear-gradient(135deg, #78224d, #320c26);
       border-radius: 12px;
-      border: 1px solid rgba(255, 220, 230, 0.4);
+      border: 1px solid rgba(255, 220, 235, 0.45);
       transform-origin: top;
       transition: transform 1.3s cubic-bezier(0.19, 1, 0.22, 1);
       box-shadow: 0 10px 30px rgba(0,0,0,0.6);
@@ -234,7 +245,7 @@
       height: 25px;
       background: radial-gradient(circle, #fff1d4, #d49c4f);
       border-radius: 50% 50% 20% 20%;
-      box-shadow: 0 0 15px rgba(255, 230, 160, 0.8);
+      box-shadow: 0 0 18px rgba(255, 230, 160, 0.9);
     }
 
     .gift-box.opened .box-lid {
@@ -247,9 +258,9 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%) scale(0);
-      width: 300px;
-      height: 300px;
-      background: radial-gradient(circle, rgba(255, 225, 200, 0.9) 0%, rgba(255, 120, 170, 0.45) 45%, transparent 75%);
+      width: 320px;
+      height: 320px;
+      background: radial-gradient(circle, rgba(255, 225, 210, 0.95) 0%, rgba(255, 120, 190, 0.5) 45%, transparent 75%);
       border-radius: 50%;
       pointer-events: none;
       transition: transform 2s cubic-bezier(0.1, 0.9, 0.2, 1), opacity 2s ease;
@@ -306,16 +317,17 @@
       font-size: 11px;
       letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: rgba(255, 230, 240, 0.85);
-      background: rgba(20, 10, 30, 0.65);
-      border: 1px solid rgba(255, 200, 220, 0.25);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      padding: 10px 20px;
+      color: rgba(255, 230, 240, 0.88);
+      background: rgba(22, 10, 35, 0.7);
+      border: 1px solid rgba(255, 200, 230, 0.3);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      padding: 10px 22px;
       border-radius: 40px;
       display: flex;
       align-items: center;
       gap: 8px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
       pointer-events: none;
     }
 
@@ -333,28 +345,28 @@
       50% { transform: scale(1.6); opacity: 1; }
     }
 
-    /* 3D FLOATING MESSAGE */
+    /* 3D FLOATING MESSAGE RISING FROM BEHIND THE FLOWERS */
     #behind-bouquet-message-container {
       position: absolute;
       top: 32%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 88%;
-      max-width: 380px;
+      width: 90%;
+      max-width: 400px;
       pointer-events: none;
       z-index: 15;
       perspective: 1000px;
     }
 
     .behind-message-card {
-      background: rgba(18, 9, 28, 0.82);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 215, 230, 0.25);
-      border-radius: 26px;
-      padding: 22px 24px;
+      background: rgba(20, 10, 32, 0.85);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 215, 235, 0.3);
+      border-radius: 28px;
+      padding: 24px 26px;
       text-align: center;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.75), 0 0 35px rgba(255, 150, 180, 0.2);
+      box-shadow: 0 25px 65px rgba(0, 0, 0, 0.8), 0 0 40px rgba(255, 150, 190, 0.25);
       transform: translateY(40px) scale(0.7) rotateX(15deg);
       opacity: 0;
       filter: blur(12px);
@@ -369,29 +381,45 @@
       filter: blur(0px);
     }
 
+    .chapter-badge {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #ffb8d0;
+      margin-bottom: 8px;
+    }
+
     .behind-quote {
       font-size: 22px;
       line-height: 1.45;
       font-family: 'Cormorant Garamond', Georgia, serif;
-      color: #fff6f8;
-      text-shadow: 0 2px 15px rgba(255, 200, 220, 0.3);
+      color: #fff8fa;
+      text-shadow: 0 2px 18px rgba(255, 200, 225, 0.35);
     }
 
     .rotation-progress-bar {
-      width: 100px;
+      width: 110px;
       height: 3px;
       background: rgba(255, 255, 255, 0.15);
       border-radius: 10px;
-      margin: 12px auto 0 auto;
+      margin: 14px auto 0 auto;
       overflow: hidden;
     }
 
     .rotation-fill {
       width: 0%;
       height: 100%;
-      background: linear-gradient(90deg, #ff94b0, #ffe6ad);
+      background: linear-gradient(90deg, #ff94b0, #ffd285, #b8a4ff);
       transition: width 0.3s ease;
-      box-shadow: 0 0 8px #ff8da7;
+      box-shadow: 0 0 10px #ff8da7;
+    }
+
+    .tap-hint-text {
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255, 220, 235, 0.5);
+      margin-top: 8px;
     }
 
     /* FLOATING CONTROLS DOCK (Arrows + Auto-Spin) */
@@ -404,42 +432,44 @@
     }
 
     .ctrl-btn {
-      background: rgba(25, 12, 38, 0.75);
-      border: 1px solid rgba(255, 200, 220, 0.3);
+      background: rgba(26, 12, 40, 0.8);
+      border: 1px solid rgba(255, 200, 230, 0.35);
       color: #ffe6ee;
-      font-size: 16px;
-      padding: 10px 18px;
+      font-size: 14px;
+      letter-spacing: 0.1em;
+      padding: 11px 20px;
       border-radius: 30px;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       cursor: pointer;
       transition: all 0.3s ease;
       display: flex;
       align-items: center;
       gap: 6px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.5);
     }
 
     .ctrl-btn:active {
       transform: scale(0.92);
-      background: rgba(255, 160, 180, 0.3);
+      background: rgba(255, 160, 190, 0.35);
     }
 
+    /* FINAL ROMANTIC KEEPSAKE LETTER */
     #final-card {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%) scale(0.9);
-      width: 88%;
-      max-width: 360px;
-      padding: 38px 28px;
+      width: 90%;
+      max-width: 380px;
+      padding: 40px 30px;
       text-align: center;
-      background: rgba(18, 8, 28, 0.92);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid rgba(255, 215, 230, 0.3);
-      border-radius: 28px;
-      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.8), 0 0 50px rgba(255, 140, 180, 0.25);
+      background: rgba(20, 8, 32, 0.94);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1px solid rgba(255, 215, 235, 0.35);
+      border-radius: 30px;
+      box-shadow: 0 35px 80px rgba(0, 0, 0, 0.85), 0 0 60px rgba(255, 140, 190, 0.3);
       opacity: 0;
       pointer-events: none;
       transition: all 1.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -479,7 +509,7 @@
     .spinner {
       width: 48px;
       height: 48px;
-      border: 2px solid rgba(255, 192, 203, 0.15);
+      border: 2px solid rgba(255, 192, 210, 0.15);
       border-top: 2px solid #ff9cb2;
       border-radius: 50%;
       animation: spin 1s linear infinite;
@@ -498,8 +528,8 @@
       text-transform: uppercase;
       padding: 12px 24px;
       border-radius: 30px;
-      background: rgba(255, 160, 180, 0.25);
-      border: 1px solid rgba(255, 200, 220, 0.4);
+      background: rgba(255, 160, 190, 0.25);
+      border: 1px solid rgba(255, 200, 230, 0.4);
       color: white;
       cursor: pointer;
       pointer-events: auto;
@@ -508,15 +538,25 @@
 </head>
 <body>
 
+  <!-- Dynamic Multi-Colored Flora Background -->
   <canvas id="botanical-canvas"></canvas>
+
+  <!-- Touch-Trail Petal Particle Canvas -->
+  <canvas id="trail-canvas"></canvas>
+
+  <!-- 3D Three.js Bouquet Layer -->
   <div id="webgl-container"></div>
+
+  <!-- Hardware-Level Gesture Capture Layer -->
   <div id="gesture-overlay"></div>
+
+  <!-- Grand Flower Eruption Sprites Container -->
   <div id="bloom-particles-container"></div>
 
   <!-- Loading State -->
   <div id="loader">
     <div class="spinner" id="spinner-icon"></div>
-    <div id="loader-msg" style="font-size: 12px; letter-spacing: 0.2em; color: rgba(255,220,225,0.85); text-transform: uppercase;">
+    <div id="loader-msg" style="font-size: 12px; letter-spacing: 0.2em; color: rgba(255,220,230,0.85); text-transform: uppercase;">
       Loading your 3D bouquet...
     </div>
     <button id="file-picker-btn" onclick="document.getElementById('manual-file').click()">Select bouquet.glb From Device</button>
@@ -548,47 +588,56 @@
     </button>
   </div>
 
-  <!-- SCENE 4: 3D BOUQUET -->
+  <!-- SCENE 4: 3D BOUQUET & EXTENDED EMOTIONAL JOURNEY -->
   <div id="scene-bouquet-ui">
     <div class="interactive-guide">
-      <span class="pulse-dot"></span> Swipe or tap buttons to rotate
+      <span class="pulse-dot"></span> Turn the bouquet to uncover the secrets
     </div>
 
+    <!-- 3D Card Rising From Behind The Bouquet -->
     <div id="behind-bouquet-message-container">
       <div class="behind-message-card" id="behind-card" onclick="advanceBehindBouquetMessage()">
+        <div class="chapter-badge" id="chapter-badge">Chapter 1 of 18</div>
         <div class="behind-quote" id="behind-quote-text">
           "You found it..."
         </div>
         <div class="rotation-progress-bar">
           <div class="rotation-fill" id="rotation-fill"></div>
         </div>
+        <div class="tap-hint-text">Turn or tap to read more ✨</div>
       </div>
     </div>
 
-    <!-- On-Screen Rotation Controls (Works 100% on Android, iPhone & Laptop) -->
+    <!-- Floating Navigation & Auto-Spin Controls -->
     <div class="controls-dock">
-      <button class="ctrl-btn" onclick="manualRotate(-0.4)">⟲ Left</button>
+      <button class="ctrl-btn" onclick="manualRotate(-0.45)">⟲ Left</button>
       <button class="ctrl-btn" id="auto-spin-btn" onclick="toggleAutoSpin()">Auto Spin ✨</button>
-      <button class="ctrl-btn" onclick="manualRotate(0.4)">Right ⟳</button>
+      <button class="ctrl-btn" onclick="manualRotate(0.45)">Right ⟳</button>
     </div>
   </div>
 
-  <!-- FINAL REVEAL CARD -->
+  <!-- FINAL ROMANTIC KEEPSAKE LETTER -->
   <div id="final-card">
-    <div style="font-size: 32px; margin-bottom: 12px;">🌷</div>
-    <h2 class="title-serif" style="font-size: 26px; margin-bottom: 14px; color: #ffeef2;">
+    <div style="font-size: 36px; margin-bottom: 12px;">🌷</div>
+    <h2 class="title-serif" style="font-size: 28px; margin-bottom: 14px; color: #fff0f5;">
       This little bouquet is yours.
     </h2>
-    <p style="font-size: 14px; line-height: 1.65; color: rgba(255,235,240,0.85); font-weight: 300; margin-bottom: 24px;">
-      "Not just the flowers, but every good memory, every laugh, and every thought behind them.<br><br>I'm genuinely glad you're in my life."
+    <p style="font-size: 14px; line-height: 1.7; color: rgba(255,235,245,0.9); font-weight: 300; margin-bottom: 24px;">
+      "Not just the flowers, but every good memory, every late-night conversation, every shared laugh, and every thought behind them.<br><br>
+      Thank you for bringing so much light, comfort, and happiness into my world. I am so genuinely grateful for you."
     </p>
-    <div style="font-size: 12px; letter-spacing: 0.2em; color: #ff9cb2; text-transform: uppercase;">
-      Happy Moments With You ❤️
+    <div style="font-size: 12px; letter-spacing: 0.22em; color: #ff9cb2; text-transform: uppercase; margin-bottom: 22px;">
+      Forever & Always With You ❤️
     </div>
+    <button class="ctrl-btn" style="margin: 0 auto;" onclick="restartExperience()">
+      Replay From Beginning 🌸
+    </button>
   </div>
 
   <script>
-    /* 1. BOTANICAL BACKGROUND */
+    /* ==========================================================
+       1. VIBRANT MULTI-COLORED BOTANICAL BACKGROUND FLORA
+       ========================================================== */
     const canvas = document.getElementById('botanical-canvas');
     const ctx = canvas.getContext('2d');
     let width, height, backgroundFlowers = [], stardust = [];
@@ -600,23 +649,34 @@
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    class BotanicalFlower {
+    // Vibrant Pastel Color Palettes for Floating Flowers
+    const flowerColorHues = [
+      { h: 340, s: 85, l: 82, center: 'rgba(255, 235, 170, 0.9)' }, // Sakura Blush
+      { h: 275, s: 80, l: 82, center: 'rgba(255, 240, 190, 0.9)' }, // Ethereal Lilac
+      { h: 42,  s: 90, l: 80, center: 'rgba(255, 255, 220, 0.95)' }, // Champagne Gold
+      { h: 200, s: 85, l: 82, center: 'rgba(255, 220, 240, 0.9)' }, // Sky Pastel
+      { h: 320, s: 85, l: 78, center: 'rgba(255, 245, 180, 0.9)' }, // Rose Magenta
+      { h: 155, s: 70, l: 82, center: 'rgba(255, 235, 200, 0.9)' }  // Spring Mint
+    ];
+
+    class ColorfulBotanicalFlower {
       constructor() { this.reset(true); }
       reset(initial = false) {
         this.x = Math.random() * width;
-        this.y = initial ? Math.random() * height : -40;
-        this.size = Math.random() * 14 + 10;
+        this.y = initial ? Math.random() * height : -45;
+        this.size = Math.random() * 15 + 10;
         this.speedY = Math.random() * 0.55 + 0.35;
         this.speedX = Math.random() * 0.4 - 0.2;
         this.angle = Math.random() * Math.PI * 2;
-        this.rotSpeed = (Math.random() - 0.5) * 0.015;
-        this.swing = Math.random() * 2;
-        this.opacity = Math.random() * 0.45 + 0.25;
-        this.hue = Math.random() > 0.5 ? 340 : 355;
+        this.rotSpeed = (Math.random() - 0.5) * 0.018;
+        this.swing = Math.random() * 3;
+        this.opacity = Math.random() * 0.55 + 0.3;
+        this.colorData = flowerColorHues[Math.floor(Math.random() * flowerColorHues.length)];
+        this.petalsCount = Math.random() > 0.5 ? 5 : 6;
       }
       update() {
         this.y += this.speedY;
-        this.x += Math.sin(this.y * 0.008 + this.swing) * 0.6 + this.speedX;
+        this.x += Math.sin(this.y * 0.008 + this.swing) * 0.7 + this.speedX;
         this.angle += this.rotSpeed;
         if (this.y > height + 50) this.reset();
       }
@@ -626,45 +686,50 @@
         ctx.rotate(this.angle);
         ctx.globalAlpha = this.opacity;
 
-        for (let i = 0; i < 5; i++) {
-          ctx.rotate((Math.PI * 2) / 5);
+        // Draw layered soft petals
+        for (let i = 0; i < this.petalsCount; i++) {
+          ctx.rotate((Math.PI * 2) / this.petalsCount);
           ctx.beginPath();
-          ctx.ellipse(0, this.size * 0.6, this.size * 0.42, this.size * 0.68, 0, 0, Math.PI * 2);
-          ctx.fillStyle = `hsla(${this.hue}, 80%, 82%, 0.75)`;
+          ctx.ellipse(0, this.size * 0.62, this.size * 0.44, this.size * 0.7, 0, 0, Math.PI * 2);
+          ctx.fillStyle = `hsla(${this.colorData.h}, ${this.colorData.s}%, ${this.colorData.l}%, 0.8)`;
           ctx.fill();
         }
 
+        // Glowing center core
         ctx.beginPath();
-        ctx.arc(0, 0, this.size * 0.22, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(255, 235, 170, 0.9)';
+        ctx.arc(0, 0, this.size * 0.24, 0, Math.PI * 2);
+        ctx.fillStyle = this.colorData.center;
+        ctx.shadowColor = `hsla(${this.colorData.h}, 90%, 80%, 0.8)`;
+        ctx.shadowBlur = 8;
         ctx.fill();
         ctx.restore();
       }
     }
 
-    class StardustParticle {
+    class ShimmerStardust {
       constructor() { this.reset(); }
       reset() {
         this.x = Math.random() * width;
         this.y = Math.random() * height;
-        this.size = Math.random() * 1.6 + 0.4;
-        this.alpha = Math.random() * 0.7 + 0.2;
+        this.size = Math.random() * 1.8 + 0.4;
+        this.alpha = Math.random() * 0.8 + 0.2;
         this.speed = Math.random() * 0.015 + 0.005;
+        this.color = Math.random() > 0.5 ? '255, 230, 220' : '230, 215, 255';
       }
       update() {
         this.alpha += this.speed;
-        if (this.alpha > 0.9 || this.alpha < 0.2) this.speed = -this.speed;
+        if (this.alpha > 0.95 || this.alpha < 0.15) this.speed = -this.speed;
       }
       draw() {
-        ctx.fillStyle = `rgba(255, 230, 215, ${Math.abs(this.alpha)})`;
+        ctx.fillStyle = `rgba(${this.color}, ${Math.abs(this.alpha)})`;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
       }
     }
 
-    for (let i = 0; i < 22; i++) backgroundFlowers.push(new BotanicalFlower());
-    for (let i = 0; i < 40; i++) stardust.push(new StardustParticle());
+    for (let i = 0; i < 26; i++) backgroundFlowers.push(new ColorfulBotanicalFlower());
+    for (let i = 0; i < 45; i++) stardust.push(new ShimmerStardust());
 
     function renderAtmosphere() {
       ctx.clearRect(0, 0, width, height);
@@ -674,7 +739,73 @@
     }
     renderAtmosphere();
 
-    /* 2. SCENE 1 & 2: INTRO & BOX */
+    /* ==========================================================
+       2. INTERACTIVE TOUCH-TRAIL FLOWER PETALS
+       ========================================================== */
+    const trailCanvas = document.getElementById('trail-canvas');
+    const trailCtx = trailCanvas.getContext('2d');
+    let touchTrail = [];
+
+    function resizeTrailCanvas() {
+      trailCanvas.width = window.innerWidth;
+      trailCanvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeTrailCanvas);
+    resizeTrailCanvas();
+
+    class TrailPetal {
+      constructor(x, y) {
+        this.x = x + (Math.random() * 20 - 10);
+        this.y = y + (Math.random() * 20 - 10);
+        this.size = Math.random() * 8 + 5;
+        this.vx = (Math.random() - 0.5) * 1.5;
+        this.vy = -Math.random() * 1.8 - 0.5;
+        this.opacity = 1;
+        this.rotation = Math.random() * 360;
+        this.rotSpeed = (Math.random() - 0.5) * 4;
+        this.hue = Math.random() > 0.5 ? (Math.random() * 40 + 320) : (Math.random() * 40 + 260);
+      }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        this.rotation += this.rotSpeed;
+        this.opacity -= 0.02;
+      }
+      draw() {
+        trailCtx.save();
+        trailCtx.translate(this.x, this.y);
+        trailCtx.rotate((this.rotation * Math.PI) / 180);
+        trailCtx.globalAlpha = Math.max(this.opacity, 0);
+        trailCtx.fillStyle = `hsla(${this.hue}, 85%, 80%, 0.8)`;
+        trailCtx.beginPath();
+        trailCtx.ellipse(0, 0, this.size, this.size * 0.55, 0, 0, Math.PI * 2);
+        trailCtx.fill();
+        trailCtx.restore();
+      }
+    }
+
+    function addTrailPetal(x, y) {
+      for (let i = 0; i < 2; i++) {
+        touchTrail.push(new TrailPetal(x, y));
+      }
+    }
+
+    function renderTrail() {
+      trailCtx.clearRect(0, 0, trailCanvas.width, trailCanvas.height);
+      for (let i = touchTrail.length - 1; i >= 0; i--) {
+        touchTrail[i].update();
+        touchTrail[i].draw();
+        if (touchTrail[i].opacity <= 0) {
+          touchTrail.splice(i, 1);
+        }
+      }
+      requestAnimationFrame(renderTrail);
+    }
+    renderTrail();
+
+    /* ==========================================================
+       3. SCENE 1 & 2: INTRO & 60+ FLOWER ERUPTION
+       ========================================================== */
     const introMsg = document.getElementById('intro-msg');
     const introBtn = document.getElementById('intro-btn');
     const giftBox = document.getElementById('gift-box');
@@ -708,23 +839,24 @@
     }
     setTimeout(playIntroText, 800);
 
+    // Erupt 60+ blooming floral spirits and floating sprites
     function createGrandFlowerEruption() {
-      const flowerSymbols = ['🌸', '🌺', '🌷', '✨', '💐', '🌼', '💖'];
-      const totalBlooms = 38;
+      const flowerSymbols = ['🌸', '🌺', '🌷', '✨', '💐', '🌼', '💖', '🪻', '🌻', '🥀'];
+      const totalBlooms = 62;
 
       for (let i = 0; i < totalBlooms; i++) {
         const el = document.createElement('div');
         el.className = 'burst-flower-sprite';
         el.textContent = flowerSymbols[Math.floor(Math.random() * flowerSymbols.length)];
-        el.style.fontSize = `${Math.random() * 22 + 18}px`;
+        el.style.fontSize = `${Math.random() * 24 + 16}px`;
         bloomContainer.appendChild(el);
 
         const angle = (Math.PI * 2 * (i / totalBlooms)) + (Math.random() * 0.4 - 0.2);
-        const distance = Math.random() * 180 + 90;
+        const distance = Math.random() * 220 + 90;
         const targetX = Math.cos(angle) * distance;
-        const targetY = Math.sin(angle) * distance - (Math.random() * 160 + 100);
-        const rotation = (Math.random() - 0.5) * 360;
-        const scale = Math.random() * 0.8 + 1.2;
+        const targetY = Math.sin(angle) * distance - (Math.random() * 180 + 120);
+        const rotation = (Math.random() - 0.5) * 450;
+        const scale = Math.random() * 0.9 + 1.2;
 
         gsap.fromTo(el, 
           { x: 0, y: 0, scale: 0.1, opacity: 0 },
@@ -734,15 +866,15 @@
             scale: scale,
             opacity: 1,
             rotation: rotation,
-            duration: 1.6 + Math.random() * 0.6,
+            duration: 1.8 + Math.random() * 0.7,
             ease: "power2.out",
             onComplete: () => {
               gsap.to(el, {
-                y: targetY - 120,
-                x: targetX + (Math.random() * 60 - 30),
+                y: targetY - 140,
+                x: targetX + (Math.random() * 80 - 40),
                 opacity: 0,
-                scale: scale * 0.4,
-                duration: 2.2 + Math.random() * 1.2,
+                scale: scale * 0.3,
+                duration: 2.4 + Math.random() * 1.2,
                 ease: "power1.inOut",
                 onComplete: () => el.remove()
               });
@@ -789,7 +921,9 @@
       setTimeout(showNextBloomText, 1400);
     });
 
-    /* 3. THREE.JS 3D BOUQUET & PIVOT ROTATION ENGINE */
+    /* ==========================================================
+       4. THREE.JS 3D BOUQUET & 18-CHAPTER EXTENDED STORY
+       ========================================================== */
     let scene, camera, renderer, bouquetPivot;
     const webglContainer = document.getElementById('webgl-container');
     const bouquetUI = document.getElementById('scene-bouquet-ui');
@@ -798,30 +932,38 @@
     const loaderMsg = document.getElementById('loader-msg');
     const filePickerBtn = document.getElementById('file-picker-btn');
 
+    // 18 Deep Romantic Messages
     const secretMessages = [
       "You found it...",
-      "There are a few things I wanted to tell you.",
-      "Every single flower here is special...",
-      "Yet none of them explains what you mean to me.",
-      "I could give you a thousand gardens...",
-      "And I'd still feel like I was missing something.",
-      "Because what makes this special isn't the flowers...",
-      "It's the person holding them ✨",
-      "You make ordinary days feel a whole lot brighter.",
-      "You've become someone I'm genuinely grateful for.",
-      "And if every good memory with you was a flower...",
-      "...I'd probably need a much bigger bouquet ❤️"
+      "I wanted to create something that would never wither away.",
+      "Just like the way I feel whenever I think about you.",
+      "Every single flower here holds a little memory...",
+      "The way your laughter makes everything else fade into the background.",
+      "The way you make ordinary moments feel like little pieces of magic.",
+      "I could search every garden in the world...",
+      "...and I’d still never find anything as radiant as your smile.",
+      "Sometimes I catch myself wondering how I got so lucky.",
+      "To have someone so kind, so beautiful, and so genuine in my life.",
+      "You are my favorite notification, my favorite comfort, and my favorite thought.",
+      "If every smile you gave me was turned into a flower...",
+      "...we’d need an endless sky to hold them all.",
+      "So what makes this gift special isn't really the flowers...",
+      "...it’s the person holding them right now ✨",
+      "Thank you for being you, exactly as you are.",
+      "You make my world a softer, brighter, and infinitely more beautiful place.",
+      "This little bouquet is yours, always & forever ❤️"
     ];
 
     let currentMsgIndex = 0;
     let accumulatedRotation = 0;
     const behindCard = document.getElementById('behind-card');
+    const chapterBadge = document.getElementById('chapter-badge');
     const behindQuote = document.getElementById('behind-quote-text');
     const rotationFill = document.getElementById('rotation-fill');
     const finalCard = document.getElementById('final-card');
     let isTransitioningMessage = false;
 
-    // Rotation System Variables
+    // Gesture & Inertia Variables
     let isDragging = false;
     let startX = 0, startY = 0;
     let targetRotY = 0, targetRotX = 0;
@@ -865,13 +1007,13 @@
         const elapsedTime = clock.getElapsedTime();
 
         if (bouquetPivot) {
-          // Smooth physics damping interpolation
+          // Smooth physics damping
           currentRotY += (targetRotY - currentRotY) * 0.1;
           currentRotX += (targetRotX - currentRotX) * 0.1;
 
           if (isAutoSpinning && !isDragging) {
-            targetRotY += 0.008;
-            trackRotation(0.008);
+            targetRotY += 0.007;
+            trackRotation(0.007);
           }
 
           bouquetPivot.rotation.y = currentRotY;
@@ -884,7 +1026,6 @@
       render3D();
     }
 
-    // Hardware-Level Pointer Capture on Overlay
     function setupGestureOverlay() {
       gestureOverlay.style.display = 'block';
 
@@ -892,6 +1033,7 @@
         isDragging = true;
         startX = e.clientX;
         startY = e.clientY;
+        addTrailPetal(e.clientX, e.clientY);
         try { gestureOverlay.setPointerCapture(e.pointerId); } catch(err){}
       });
 
@@ -902,6 +1044,9 @@
         const deltaY = e.clientY - startY;
         startX = e.clientX;
         startY = e.clientY;
+
+        // Spawn trailing petals at touch point
+        addTrailPetal(e.clientX, e.clientY);
 
         targetRotY += deltaX * 0.012;
         targetRotX += deltaY * 0.006;
@@ -918,7 +1063,7 @@
       gestureOverlay.addEventListener('pointerup', stopDrag);
       gestureOverlay.addEventListener('pointercancel', stopDrag);
 
-      // Wheel Zoom for Laptops
+      // Wheel Zoom
       window.addEventListener('wheel', (e) => {
         if (camera) {
           camera.position.z += e.deltaY * 0.002;
@@ -927,7 +1072,6 @@
       }, { passive: true });
     }
 
-    // Manual rotation via buttons (Works on all devices)
     function manualRotate(delta) {
       targetRotY += delta;
       trackRotation(Math.abs(delta));
@@ -936,12 +1080,12 @@
     function toggleAutoSpin() {
       isAutoSpinning = !isAutoSpinning;
       const btn = document.getElementById('auto-spin-btn');
-      btn.style.background = isAutoSpinning ? 'rgba(255, 150, 180, 0.45)' : 'rgba(25, 12, 38, 0.75)';
+      btn.style.background = isAutoSpinning ? 'rgba(255, 150, 190, 0.5)' : 'rgba(26, 12, 40, 0.8)';
     }
 
     function trackRotation(delta) {
       accumulatedRotation += delta;
-      const rotationThreshold = 0.8;
+      const rotationThreshold = 0.85;
       const progress = Math.min((accumulatedRotation / rotationThreshold) * 100, 100);
       rotationFill.style.width = `${progress}%`;
 
@@ -959,6 +1103,7 @@
         behindCard.classList.remove('emerged');
 
         setTimeout(() => {
+          chapterBadge.textContent = `Chapter ${currentMsgIndex + 1} of ${secretMessages.length}`;
           behindQuote.textContent = `"${secretMessages[currentMsgIndex]}"`;
           behindCard.classList.add('emerged');
           setTimeout(() => { isTransitioningMessage = false; }, 600);
@@ -969,6 +1114,17 @@
           finalCard.classList.add('visible');
         }, 700);
       }
+    }
+
+    function restartExperience() {
+      finalCard.classList.remove('visible');
+      currentMsgIndex = 0;
+      accumulatedRotation = 0;
+      chapterBadge.textContent = `Chapter 1 of ${secretMessages.length}`;
+      behindQuote.textContent = `"${secretMessages[0]}"`;
+      setTimeout(() => {
+        behindCard.classList.add('emerged');
+      }, 500);
     }
 
     const possibleNames = [
@@ -1053,14 +1209,12 @@
       }
     }
 
-    // Mathematical Center Pivot Alignment
     function setupBouquetScene(model) {
       if (bouquetPivot) scene.remove(bouquetPivot);
 
       const wrapper = new THREE.Group();
       scene.add(wrapper);
 
-      // Force two-sided petals rendering
       model.traverse((child) => {
         if (child.isMesh && child.material) {
           child.material.side = THREE.DoubleSide;
@@ -1071,7 +1225,6 @@
       const center = box.getCenter(new THREE.Vector3());
       const size = box.getSize(new THREE.Vector3());
 
-      // Center model exactly inside the wrapper pivot
       model.position.x = -center.x;
       model.position.y = -center.y;
       model.position.z = -center.z;
@@ -1086,6 +1239,7 @@
       loaderEl.classList.remove('active');
 
       setTimeout(() => {
+        chapterBadge.textContent = `Chapter 1 of ${secretMessages.length}`;
         behindQuote.textContent = `"${secretMessages[0]}"`;
         behindCard.classList.add('emerged');
       }, 800);
