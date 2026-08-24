@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>For Someone Truly Special ✨</title>
+  
+  <!-- Premium Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
+
+  <!-- 3D Engines + Full DRACO Decompressor -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/DRACOLoader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: radial-gradient(circle at 50% 40%, #150b1f 0%, #08040d 75%, #030105 100%);
+      color: #f7f3ee;
+      font-family: 'Montserrat', sans-serif;
+      position: fixed;
+      touch-action: none;
+    }
+
+    /* Dynamic Botanical Background */
+    #botanical-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* 3D WebGL Canvas */
+    #webgl-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    #webgl-container.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .title-serif {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 300;
+      letter-spacing: 0.04em;
+      line-height: 1.35;
+      text-shadow: 0 0 25px rgba(255, 210, 220, 0.4);
+    }
+
+    .romantic-btn {
+      background: linear-gradient(135deg, rgba(240, 160, 180, 0.35), rgba(180, 100, 130, 0.2));
+      border: 1px solid rgba(255, 215, 225, 0.45);
+      color: #fff6f8;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 16px 36px;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 0 35px rgba(245, 140, 170, 0.3), inset 0 0 15px rgba(255, 255, 255, 0.2);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      outline: none;
+    }
+
+    .romantic-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* SCENE 1 & 2: GIFT BOX */
+    #scene-intro {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 24px;
+      z-index: 20;
+      transition: opacity 1.2s ease;
+    }
+
+    .intro-text-box {
+      min-height: 120px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      max-width: 360px;
+    }
+
+    .intro-line {
+      font-size: 26px;
+      line-height: 1.4;
+      opacity: 0;
+      transition: opacity 0.8s ease, transform 0.8s ease;
+      transform: translateY(10px);
+    }
+
+    .intro-line.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .gift-box-wrapper {
+      position: relative;
+      width: 150px;
+      height: 150px;
+      margin: 45px 0;
+      perspective: 900px;
+    }
+
+    .gift-box {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+    }
+
+    .box-base {
+      position: absolute;
+      bottom: 0;
+      width: 130px;
+      height: 95px;
+      left: 10px;
+      background: linear-gradient(135deg, #4d1630, #1f0717);
+      border-radius: 14px;
+      border: 1px solid rgba(255, 200, 215, 0.3);
+      box-shadow: 0 20px 45px rgba(0,0,0,0.7), inset 0 0 25px rgba(255, 120, 160, 0.2);
+    }
+
+    .box-ribbon-v {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      width: 20px;
+      height: 100%;
+      transform: translateX(-50%);
+      background: linear-gradient(to bottom, #ffe8bf, #d49c4f);
+      box-shadow: 0 0 12px rgba(255, 220, 140, 0.5);
+    }
+
+    .box-ribbon-h {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 20px;
+      transform: translateY(-50%);
+      background: linear-gradient(to right, #ffe8bf, #d49c4f);
+      box-shadow: 0 0 12px rgba(255, 220, 140, 0.5);
+    }
+
+    .box-lid {
+      position: absolute;
+      top: 20px;
+      left: 0;
+      width: 150px;
+      height: 40px;
+      background: linear-gradient(135deg, #6b1f44, #2d0b21);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 220, 230, 0.4);
+      transform-origin: top;
+      transition: transform 1.3s cubic-bezier(0.19, 1, 0.22, 1);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    }
+
+    .box-bow {
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 42px;
+      height: 25px;
+      background: radial-gradient(circle, #fff1d4, #d49c4f);
+      border-radius: 50% 50% 20% 20%;
+      box-shadow: 0 0 15px rgba(255, 230, 160, 0.8);
+    }
+
+    .gift-box.opened .box-lid {
+      transform: translateY(-90px) rotateX(120deg) rotateZ(18deg);
+      opacity: 0.1;
+    }
+
+    .box-burst-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(255, 225, 200, 0.9) 0%, rgba(255, 120, 170, 0.45) 45%, transparent 75%);
+      border-radius: 50%;
+      pointer-events: none;
+      transition: transform 2s cubic-bezier(0.1, 0.9, 0.2, 1), opacity 2s ease;
+      opacity: 0;
+    }
+
+    .gift-box.opened .box-burst-glow {
+      transform: translate(-50%, -50%) scale(2.8);
+      opacity: 1;
+    }
+
+    #bloom-particles-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 25;
+    }
+
+    .burst-flower-sprite {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      pointer-events: none;
+      will-change: transform, opacity;
+    }
+
+    /* SCENE 4: 3D BOUQUET & MESSAGES */
+    #scene-bouquet-ui {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: max(24px, env(safe-area-inset-top)) 20px max(34px, env(safe-area-inset-bottom)) 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 1.5s ease;
+      z-index: 30;
+    }
+
+    #scene-bouquet-ui.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .interactive-guide {
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255, 230, 240, 0.75);
+      background: rgba(20, 10, 30, 0.65);
+      border: 1px solid rgba(255, 200, 220, 0.22);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      padding: 11px 22px;
+      border-radius: 40px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pulse-dot {
+      width: 6px;
+      height: 6px;
+      background: #ff9cb2;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #ff7b9a;
+      animation: pulseAnim 1.8s infinite;
+    }
+
+    @keyframes pulseAnim {
+      0%, 100% { transform: scale(1); opacity: 0.5; }
+      50% { transform: scale(1.6); opacity: 1; }
+    }
+
+    #behind-bouquet-message-container {
+      position: absolute;
+      top: 38%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 88%;
+      max-width: 380px;
+      pointer-events: none;
+      z-index: 15;
+      perspective: 1000px;
+    }
+
+    .behind-message-card {
+      background: rgba(18, 9, 28, 0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 215, 230, 0.25);
+      border-radius: 26px;
+      padding: 24px 26px;
+      text-align: center;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.75), 0 0 35px rgba(255, 150, 180, 0.2);
+      transform: translateY(40px) scale(0.7) rotateX(15deg);
+      opacity: 0;
+      filter: blur(12px);
+      transition: all 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .behind-message-card.emerged {
+      transform: translateY(-85px) scale(1) rotateX(0deg);
+      opacity: 1;
+      filter: blur(0px);
+    }
+
+    .behind-quote {
+      font-size: 23px;
+      line-height: 1.45;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      color: #fff6f8;
+      text-shadow: 0 2px 15px rgba(255, 200, 220, 0.3);
+    }
+
+    .rotation-progress-bar {
+      width: 100px;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+      margin: 14px auto 0 auto;
+      overflow: hidden;
+    }
+
+    .rotation-fill {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #ff94b0, #ffe6ad);
+      transition: width 0.3s ease;
+      box-shadow: 0 0 8px #ff8da7;
+    }
+
+    .turn-hint {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255, 215, 225, 0.6);
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    #final-card {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.9);
+      width: 88%;
+      max-width: 360px;
+      padding: 38px 28px;
+      text-align: center;
+      background: rgba(18, 8, 28, 0.88);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 215, 230, 0.3);
+      border-radius: 28px;
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.8), 0 0 50px rgba(255, 140, 180, 0.25);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 50;
+    }
+
+    #final-card.visible {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    /* 3D LOADER & REAL-TIME PROGRESS */
+    #loader {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      z-index: 35;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      width: 90%;
+      max-width: 340px;
+      text-align: center;
+    }
+
+    #loader.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .spinner {
+      width: 48px;
+      height: 48px;
+      border: 2px solid rgba(255, 192, 203, 0.15);
+      border-top: 2px solid #ff9cb2;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    #file-picker-btn {
+      display: none;
+      margin-top: 14px;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 12px 24px;
+      border-radius: 30px;
+      background: rgba(255, 160, 180, 0.25);
+      border: 1px solid rgba(255, 200, 220, 0.4);
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="botanical-canvas"></canvas>
+  <div id="webgl-container"></div>
+  <div id="bloom-particles-container"></div>
+
+  <!-- Loading State & Progress -->
+  <div id="loader">
+    <div class="spinner" id="spinner-icon"></div>
+    <div id="loader-msg" style="font-size: 12px; letter-spacing: 0.2em; color: rgba(255,220,225,0.85); text-transform: uppercase;">
+      Loading your 3D bouquet...
+    </div>
+    <button id="file-picker-btn" onclick="document.getElementById('manual-file').click()">Select bouquet.glb From Device</button>
+    <input type="file" id="manual-file" accept=".glb,.gltf,.gbl" style="display:none" onchange="handleManualFile(this)">
+  </div>
+
+  <!-- SCENE 1 & 2: INTRO & GIFT BOX -->
+  <div id="scene-intro">
+    <div class="intro-text-box">
+      <h1 id="intro-msg" class="title-serif intro-line visible">I have a little gift for you...</h1>
+    </div>
+
+    <div class="gift-box-wrapper" id="gift-box-wrapper">
+      <div class="box-burst-glow" id="box-glow"></div>
+      <div class="gift-box" id="gift-box">
+        <div class="box-base">
+          <div class="box-ribbon-v"></div>
+          <div class="box-ribbon-h"></div>
+        </div>
+        <div class="box-lid">
+          <div class="box-ribbon-v" style="height: 100%;"></div>
+          <div class="box-bow"></div>
+        </div>
+      </div>
+    </div>
+
+    <button id="intro-btn" class="romantic-btn" style="opacity: 0; pointer-events: none;">
+      Open it ✨
+    </button>
+  </div>
+
+  <!-- SCENE 4: 3D BOUQUET -->
+  <div id="scene-bouquet-ui">
+    <div class="interactive-guide">
+      <span class="pulse-dot"></span> Rotate the bouquet to uncover the messages
+    </div>
+
+    <div id="behind-bouquet-message-container">
+      <div class="behind-message-card" id="behind-card">
+        <div class="behind-quote" id="behind-quote-text">
+          "You found it..."
+        </div>
+        <div class="rotation-progress-bar">
+          <div class="rotation-fill" id="rotation-fill"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="turn-hint" id="turn-hint-text">
+      Slide with finger to turn 🌷
+    </div>
+  </div>
+
+  <!-- FINAL REVEAL CARD -->
+  <div id="final-card">
+    <div style="font-size: 32px; margin-bottom: 12px;">🌷</div>
+    <h2 class="title-serif" style="font-size: 26px; margin-bottom: 14px; color: #ffeef2;">
+      This little bouquet is yours.
+    </h2>
+    <p style="font-size: 14px; line-height: 1.65; color: rgba(255,235,240,0.85); font-weight: 300; margin-bottom: 24px;">
+      "Not just the flowers, but every good memory, every laugh, and every thought behind them.<br><br>I'm genuinely glad you're in my life."
+    </p>
+    <div style="font-size: 12px; letter-spacing: 0.2em; color: #ff9cb2; text-transform: uppercase;">
+      Happy Moments With You ❤️
+    </div>
+  </div>
+
+  <script>
+    /* 1. BOTANICAL BACKGROUND */
+    const canvas = document.getElementById('botanical-canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height, backgroundFlowers = [], stardust = [];
+
+    function resizeCanvas() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class BotanicalFlower {
+      constructor() { this.reset(true); }
+      reset(initial = false) {
+        this.x = Math.random() * width;
+        this.y = initial ? Math.random() * height : -40;
+        this.size = Math.random() * 14 + 10;
+        this.speedY = Math.random() * 0.55 + 0.35;
+        this.speedX = Math.random() * 0.4 - 0.2;
+        this.angle = Math.random() * Math.PI * 2;
+        this.rotSpeed = (Math.random() - 0.5) * 0.015;
+        this.swing = Math.random() * 2;
+        this.opacity = Math.random() * 0.45 + 0.25;
+        this.hue = Math.random() > 0.5 ? 340 : 355;
+      }
+      update() {
+        this.y += this.speedY;
+        this.x += Math.sin(this.y * 0.008 + this.swing) * 0.6 + this.speedX;
+        this.angle += this.rotSpeed;
+        if (this.y > height + 50) this.reset();
+      }
+      draw() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.angle);
+        ctx.globalAlpha = this.opacity;
+
+        for (let i = 0; i < 5; i++) {
+          ctx.rotate((Math.PI * 2) / 5);
+          ctx.beginPath();
+          ctx.ellipse(0, this.size * 0.6, this.size * 0.42, this.size * 0.68, 0, 0, Math.PI * 2);
+          ctx.fillStyle = `hsla(${this.hue}, 80%, 82%, 0.75)`;
+          ctx.fill();
+        }
+
+        ctx.beginPath();
+        ctx.arc(0, 0, this.size * 0.22, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 235, 170, 0.9)';
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    class StardustParticle {
+      constructor() { this.reset(); }
+      reset() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.size = Math.random() * 1.6 + 0.4;
+        this.alpha = Math.random() * 0.7 + 0.2;
+        this.speed = Math.random() * 0.015 + 0.005;
+      }
+      update() {
+        this.alpha += this.speed;
+        if (this.alpha > 0.9 || this.alpha < 0.2) this.speed = -this.speed;
+      }
+      draw() {
+        ctx.fillStyle = `rgba(255, 230, 215, ${Math.abs(this.alpha)})`;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < 22; i++) backgroundFlowers.push(new BotanicalFlower());
+    for (let i = 0; i < 40; i++) stardust.push(new StardustParticle());
+
+    function renderAtmosphere() {
+      ctx.clearRect(0, 0, width, height);
+      stardust.forEach(s => { s.update(); s.draw(); });
+      backgroundFlowers.forEach(f => { f.update(); f.draw(); });
+      requestAnimationFrame(renderAtmosphere);
+    }
+    renderAtmosphere();
+
+    /* 2. SCENE 1 & 2: INTRO & BOX */
+    const introMsg = document.getElementById('intro-msg');
+    const introBtn = document.getElementById('intro-btn');
+    const giftBox = document.getElementById('gift-box');
+    const sceneIntro = document.getElementById('scene-intro');
+    const bloomContainer = document.getElementById('bloom-particles-container');
+
+    const introDialogue = [
+      { text: "I have a little gift for you...", delay: 2000 },
+      { text: "It's not something I could wrap.", delay: 2200 },
+      { text: "So you'll have to open it yourself ✨", delay: 1000 }
+    ];
+
+    let dialogueIndex = 0;
+    function playIntroText() {
+      if (dialogueIndex < introDialogue.length) {
+        introMsg.classList.remove('visible');
+        setTimeout(() => {
+          introMsg.textContent = introDialogue[dialogueIndex].text;
+          introMsg.classList.add('visible');
+          dialogueIndex++;
+          if (dialogueIndex === introDialogue.length) {
+            setTimeout(() => {
+              introBtn.style.opacity = 1;
+              introBtn.style.pointerEvents = 'auto';
+            }, 800);
+          } else {
+            setTimeout(playIntroText, introDialogue[dialogueIndex - 1].delay);
+          }
+        }, 500);
+      }
+    }
+    setTimeout(playIntroText, 800);
+
+    function createGrandFlowerEruption() {
+      const flowerSymbols = ['🌸', '🌺', '🌷', '✨', '💐', '🌼', '💖'];
+      const totalBlooms = 38;
+
+      for (let i = 0; i < totalBlooms; i++) {
+        const el = document.createElement('div');
+        el.className = 'burst-flower-sprite';
+        el.textContent = flowerSymbols[Math.floor(Math.random() * flowerSymbols.length)];
+        el.style.fontSize = `${Math.random() * 22 + 18}px`;
+        bloomContainer.appendChild(el);
+
+        const angle = (Math.PI * 2 * (i / totalBlooms)) + (Math.random() * 0.4 - 0.2);
+        const distance = Math.random() * 180 + 90;
+        const targetX = Math.cos(angle) * distance;
+        const targetY = Math.sin(angle) * distance - (Math.random() * 160 + 100);
+        const rotation = (Math.random() - 0.5) * 360;
+        const scale = Math.random() * 0.8 + 1.2;
+
+        gsap.fromTo(el, 
+          { x: 0, y: 0, scale: 0.1, opacity: 0 },
+          {
+            x: targetX,
+            y: targetY,
+            scale: scale,
+            opacity: 1,
+            rotation: rotation,
+            duration: 1.6 + Math.random() * 0.6,
+            ease: "power2.out",
+            onComplete: () => {
+              gsap.to(el, {
+                y: targetY - 120,
+                x: targetX + (Math.random() * 60 - 30),
+                opacity: 0,
+                scale: scale * 0.4,
+                duration: 2.2 + Math.random() * 1.2,
+                ease: "power1.inOut",
+                onComplete: () => el.remove()
+              });
+            }
+          }
+        );
+      }
+    }
+
+    introBtn.addEventListener('click', () => {
+      introBtn.style.opacity = 0;
+      introBtn.style.pointerEvents = 'none';
+      giftBox.classList.add('opened');
+
+      createGrandFlowerEruption();
+
+      const bloomDialogue = [
+        "I wanted to give you something beautiful...",
+        "Flowers that won't ever fade away.",
+        "And something waiting just for you 🌷"
+      ];
+
+      let bIdx = 0;
+      function showNextBloomText() {
+        if (bIdx < bloomDialogue.length) {
+          introMsg.classList.remove('visible');
+          setTimeout(() => {
+            introMsg.textContent = bloomDialogue[bIdx];
+            introMsg.classList.add('visible');
+            bIdx++;
+            if (bIdx === bloomDialogue.length) {
+              setTimeout(() => {
+                introBtn.textContent = "Discover Your Bouquet 🌷";
+                introBtn.style.opacity = 1;
+                introBtn.style.pointerEvents = 'auto';
+                introBtn.onclick = transitionToBouquetScene;
+              }, 1200);
+            } else {
+              setTimeout(showNextBloomText, 2400);
+            }
+          }, 500);
+        }
+      }
+      setTimeout(showNextBloomText, 1400);
+    });
+
+    /* 3. THREE.JS 3D BOUQUET + FULL DRACO DECOMPRESSOR */
+    let scene, camera, renderer, controls, bouquetModel;
+    const webglContainer = document.getElementById('webgl-container');
+    const bouquetUI = document.getElementById('scene-bouquet-ui');
+    const loaderEl = document.getElementById('loader');
+    const loaderMsg = document.getElementById('loader-msg');
+    const filePickerBtn = document.getElementById('file-picker-btn');
+
+    const secretMessages = [
+      "You found it...",
+      "There are a few things I wanted to tell you.",
+      "Every single flower here is special...",
+      "Yet none of them explains what you mean to me.",
+      "I could give you a thousand gardens...",
+      "And I'd still feel like I was missing something.",
+      "Because what makes this special isn't the flowers...",
+      "It's the person holding them ✨",
+      "You make ordinary days feel a whole lot brighter.",
+      "You've become someone I'm genuinely grateful for.",
+      "And if every good memory with you was a flower...",
+      "...I'd probably need a much bigger bouquet ❤️"
+    ];
+
+    let currentMsgIndex = 0;
+    let accumulatedRotation = 0;
+    let lastAzimuthalAngle = 0;
+    const behindCard = document.getElementById('behind-card');
+    const behindQuote = document.getElementById('behind-quote-text');
+    const rotationFill = document.getElementById('rotation-fill');
+    const finalCard = document.getElementById('final-card');
+    let isTransitioningMessage = false;
+
+    function init3D() {
+      scene = new THREE.Scene();
+
+      camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.set(0, 0.3, 3.1);
+
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.25;
+      webglContainer.appendChild(renderer.domElement);
+
+      const ambientLight = new THREE.AmbientLight(0xfff5f8, 1.4);
+      scene.add(ambientLight);
+
+      const mainLight = new THREE.DirectionalLight(0xfff0e6, 2.4);
+      mainLight.position.set(3, 5, 4);
+      scene.add(mainLight);
+
+      const rimLight = new THREE.DirectionalLight(0xff94b8, 2.0);
+      rimLight.position.set(-3, -2, -3);
+      scene.add(rimLight);
+
+      const centerGlow = new THREE.PointLight(0xffc5d3, 1.6, 6);
+      centerGlow.position.set(0, 0, 0.5);
+      scene.add(centerGlow);
+
+      controls = new THREE.OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.06;
+      controls.enablePan = false;
+      controls.minDistance = 1.6;
+      controls.maxDistance = 4.8;
+      controls.maxPolarAngle = Math.PI / 1.7;
+
+      lastAzimuthalAngle = controls.getAzimuthalAngle();
+
+      controls.addEventListener('change', () => {
+        const currentAngle = controls.getAzimuthalAngle();
+        let delta = Math.abs(currentAngle - lastAzimuthalAngle);
+        if (delta > Math.PI) delta = Math.PI * 2 - delta;
+
+        accumulatedRotation += delta;
+        lastAzimuthalAngle = currentAngle;
+
+        const rotationThreshold = 0.85;
+        const progress = Math.min((accumulatedRotation / rotationThreshold) * 100, 100);
+        rotationFill.style.width = `${progress}%`;
+
+        if (accumulatedRotation >= rotationThreshold && !isTransitioningMessage) {
+          accumulatedRotation = 0;
+          rotationFill.style.width = '0%';
+          advanceBehindBouquetMessage();
+        }
+      });
+
+      loadBouquetModel();
+
+      const clock = new THREE.Clock();
+      function render3D() {
+        requestAnimationFrame(render3D);
+        const elapsedTime = clock.getElapsedTime();
+        if (bouquetModel) {
+          bouquetModel.position.y = Math.sin(elapsedTime * 1.3) * 0.04 - 0.12;
+        }
+        controls.update();
+        renderer.render(scene, camera);
+      }
+      render3D();
+    }
+
+    function advanceBehindBouquetMessage() {
+      if (currentMsgIndex < secretMessages.length - 1) {
+        isTransitioningMessage = true;
+        currentMsgIndex++;
+        behindCard.classList.remove('emerged');
+
+        setTimeout(() => {
+          behindQuote.textContent = `"${secretMessages[currentMsgIndex]}"`;
+          behindCard.classList.add('emerged');
+          setTimeout(() => { isTransitioningMessage = false; }, 800);
+        }, 500);
+      } else {
+        behindCard.classList.remove('emerged');
+        setTimeout(() => {
+          finalCard.classList.add('visible');
+        }, 700);
+      }
+    }
+
+    // Comprehensive Path Search List for GitHub Pages
+    const possibleNames = [
+      './bouquet.glb',
+      'bouquet.glb',
+      './bouquet.gbl',
+      'bouquet.gbl',
+      './Bouquet.glb',
+      'Bouquet.glb',
+      './bouquet.GLB',
+      'bouquet.GLB',
+      './model.glb',
+      'model.glb'
+    ];
+    let nameIndex = 0;
+
+    function getGLTFLoaderInstance() {
+      const loader = new THREE.GLTFLoader();
+      // Configure Draco Decoder for compressed models
+      const dracoLoader = new THREE.DRACOLoader();
+      dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.4.3/');
+      loader.setDRACOLoader(dracoLoader);
+      return loader;
+    }
+
+    function loadBouquetModel() {
+      loaderEl.classList.add('active');
+      loaderMsg.textContent = "Loading your 3D bouquet...";
+      tryNextFilename();
+    }
+
+    function tryNextFilename() {
+      if (nameIndex >= possibleNames.length) {
+        loaderMsg.innerHTML = "Bouquet file not found on GitHub.<br><span style='font-size:10px; color:#ffb3c6;'>Make sure bouquet.glb is uploaded directly into your repository.</span>";
+        filePickerBtn.style.display = 'inline-block';
+        return;
+      }
+
+      const path = possibleNames[nameIndex];
+      const loader = getGLTFLoaderInstance();
+
+      loader.load(
+        path,
+        function (gltf) {
+          setupBouquetScene(gltf.scene);
+        },
+        function (xhr) {
+          if (xhr.lengthComputable && xhr.total > 0) {
+            const percent = Math.round((xhr.loaded / xhr.total) * 100);
+            loaderMsg.textContent = `Loading bouquet... ${percent}%`;
+          }
+        },
+        function () {
+          nameIndex++;
+          tryNextFilename();
+        }
+      );
+    }
+
+    function handleManualFile(input) {
+      if (input.files && input.files[0]) {
+        const file = input.files[0];
+        const url = URL.createObjectURL(file);
+        const loader = getGLTFLoaderInstance();
+        loaderMsg.textContent = "Processing selected 3D file...";
+        filePickerBtn.style.display = 'none';
+
+        loader.load(
+          url,
+          function (gltf) {
+            setupBouquetScene(gltf.scene);
+          },
+          function (xhr) {
+            if (xhr.lengthComputable) {
+              const percent = Math.round((xhr.loaded / xhr.total) * 100);
+              loaderMsg.textContent = `Loading file... ${percent}%`;
+            }
+          },
+          function (err) {
+            loaderMsg.textContent = "Could not parse this 3D model file.";
+          }
+        );
+      }
+    }
+
+    function setupBouquetScene(model) {
+      if (bouquetModel) scene.remove(bouquetModel);
+      bouquetModel = model;
+
+      const box = new THREE.Box3().setFromObject(bouquetModel);
+      const center = box.getCenter(new THREE.Vector3());
+      const size = box.getSize(new THREE.Vector3());
+
+      bouquetModel.position.sub(center);
+
+      const maxDim = Math.max(size.x, size.y, size.z);
+      const scale = 1.9 / maxDim;
+      bouquetModel.scale.set(scale, scale, scale);
+
+      scene.add(bouquetModel);
+      loaderEl.classList.remove('active');
+
+      setTimeout(() => {
+        behindQuote.textContent = `"${secretMessages[0]}"`;
+        behindCard.classList.add('emerged');
+      }, 800);
+    }
+
+    window.addEventListener('resize', () => {
+      if (camera && renderer) {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      }
+    });
+
+    function transitionToBouquetScene() {
+      sceneIntro.style.opacity = 0;
+      setTimeout(() => {
+        sceneIntro.style.display = 'none';
+        webglContainer.classList.add('active');
+        bouquetUI.classList.add('active');
+        init3D();
+      }, 1200);
+    }
+  </script>
+</body>
+</html>
